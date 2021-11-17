@@ -42,6 +42,11 @@ import ManaValues from '../tbc/modules/ManaValues';
 import PreparationRuleAnalyzer from './modules/features/Checklist/PreparationRuleAnalyzer';
 import CombatPotionChecker from './modules/items/CombatPotionChecker';
 import EnchantChecker from './modules/items/EnchantChecker';
+import DarkIronSmokingPipe from './modules/items/trinkets/DarkIronSmokingPipe';
+import DirebrewHops from './modules/items/trinkets/DirebrewHops';
+import EssenceOfTheMartyr from './modules/items/trinkets/EssenceOfTheMartyr';
+import IconOfTheSilverCrescent from './modules/items/trinkets/IconOfTheSilverCrescent';
+import SpellCoefficients from './modules/SpellCoefficients';
 import ManaGained from './statistic/ManaGained';
 
 class CombatLogParser extends BaseCombatLogParser {
@@ -70,6 +75,11 @@ class CombatLogParser extends BaseCombatLogParser {
     preparationRuleAnalyzer: PreparationRuleAnalyzer,
     combatPotionChecker: CombatPotionChecker,
 
+    essenceOfTheMartyr: EssenceOfTheMartyr,
+    direbrewHops: DirebrewHops,
+    darkIronSmokingPipe: DarkIronSmokingPipe,
+    iconOfTheSilverCrescent: IconOfTheSilverCrescent,
+
     enemies: Enemies,
     enemyInstances: EnemyInstances,
     pets: Pets,
@@ -93,6 +103,7 @@ class CombatLogParser extends BaseCombatLogParser {
     distanceMoved: DistanceMoved,
     deathRecapTracker: DeathRecapTracker,
     dispels: DispelTracker,
+    spellCoefficients: SpellCoefficients,
 
     critEffectBonus: CritEffectBonus,
 

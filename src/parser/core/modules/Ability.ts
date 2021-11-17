@@ -387,6 +387,9 @@ class Ability {
   /** @deprecated Use the Buffs module to define your buffs instead. If your spec has no Buffs module, this prop will be used to prefill it. */
   buffSpellId: number | number[] | null = null;
   shownSpell = null;
+  primaryCoefficient: number | undefined;
+  healSpellIds: number[] | null = null;
+  damageSpellIds: number[] | null = null;
 
   /**
    * @param owner

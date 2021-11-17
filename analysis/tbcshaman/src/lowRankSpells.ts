@@ -41,6 +41,35 @@ export const whitelist = {
   [SPELLS.EARTH_SHOCK]: [8042],
 };
 
+export const downrankInfo: { [key: number]: number } = {
+  // Chain Heal
+  1064: 0.714, // Rank 1
+  10622: 0.829, // Rank 2
+  10623: 0.929, // Rank 3
+  25422: 1, // Rank 4
+
+  // Healing Wave
+  331: 0.143, // Rank 1
+  332: 0.229, // Rank 2
+  547: 0.314, // Rank 3
+  913: 0.4, // Rank 4
+  939: 0.514, // Rank 5
+  959: 0.629, // Rank 6
+  8005: 0.743, // Rank 7
+  10395: 0.857, // Rank 8
+  10396: 0.914, // Rank 9
+  25357: 0.957, // Rank 10
+  25391: 1, // Rank 11
+
+  // Lesser Healing Wave
+  8004: 0.457, // Rank 1
+  8008: 0.571, // Rank 2
+  8010: 0.686, // Rank 3
+  10466: 0.8, // Rank 4
+  10467: 0.914, // Rank 5
+  10468: 1, // Rank 6
+};
+
 export interface LowRankSpells {
   [primarySpellId: number]: number[];
 }

@@ -18,6 +18,7 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.OTHERS,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.714,
         castEfficiency: {
           casts: (ability, parser) => {
             const chainHeals: number[] = [SPELLS.CHAIN_HEAL, ...lowRankSpells[SPELLS.CHAIN_HEAL]];
@@ -36,6 +37,7 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.OTHERS,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.857,
         castEfficiency: {
           casts: (ability, parser) => {
             const healingWave: number[] = [
@@ -57,12 +59,15 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.OTHERS,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.429,
       },
       {
         spell: [SPELLS.EARTH_SHIELD, ...lowRankSpells[SPELLS.EARTH_SHIELD]],
         enabled: this.owner.build === Build.DEFAULT,
         category: Abilities.SPELL_CATEGORIES.ROTATIONAL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.286,
+        healSpellIds: [SPELL_EFFECTS.EARTH_SHIELD_HEAL],
       },
 
       // Ele
@@ -73,6 +78,8 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.795,
+        damageSpellIds: [SPELL_EFFECTS.LIGHTNING_BOLT_OVERLOAD],
       },
       {
         spell: [SPELLS.CHAIN_LIGHTNING, ...lowRankSpells[SPELLS.CHAIN_LIGHTNING]],
@@ -81,7 +88,9 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.641,
         cooldown: 6,
+        damageSpellIds: [SPELL_EFFECTS.CHAIN_LIGHTNING_OVERLOAD],
       },
 
       // Enhancement
@@ -100,6 +109,7 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.1,
         cooldown: 6,
       },
       {
@@ -109,6 +119,7 @@ class Abilities extends CoreAbilities {
             ? Abilities.SPELL_CATEGORIES.ROTATIONAL
             : Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.386,
         cooldown: 6,
       },
       {
@@ -222,6 +233,7 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.FIRE_NOVA_TOTEM, ...lowRankSpells[SPELLS.FIRE_NOVA_TOTEM]],
         category: Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1000 },
+        primaryCoefficient: 0.214,
         cooldown: 15,
       },
       {
@@ -234,6 +246,7 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.FLAMETONGUE_TOTEM, ...lowRankSpells[SPELLS.FLAMETONGUE_TOTEM]],
         category: Abilities.SPELL_CATEGORIES.UTILITY,
         gcd: { static: 1000 },
+        primaryCoefficient: 0.045,
       },
       {
         spell: [SPELLS.FROST_RESISTANCE_TOTEM, ...lowRankSpells[SPELLS.FROST_RESISTANCE_TOTEM]],
@@ -244,6 +257,7 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.FROST_SHOCK, ...lowRankSpells[SPELLS.FROST_SHOCK]],
         category: Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1500 },
+        primaryCoefficient: 0.386,
         cooldown: 6,
       },
       {
@@ -255,6 +269,8 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.HEALING_STREAM_TOTEM, ...lowRankSpells[SPELLS.HEALING_STREAM_TOTEM]],
         category: Abilities.SPELL_CATEGORIES.OTHERS,
         gcd: { static: 1000 },
+        primaryCoefficient: 0.045,
+        healSpellIds: [25566, 10463, 10462, 6377, 6375, 5394],
       },
       {
         spell: [SPELLS.LIGHTNING_SHIELD, ...lowRankSpells[SPELLS.LIGHTNING_SHIELD]],
@@ -265,6 +281,7 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.MAGMA_TOTEM, ...lowRankSpells[SPELLS.MAGMA_TOTEM]],
         category: Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1000 },
+        primaryCoefficient: 0.067,
       },
       {
         spell: [SPELLS.MANA_SPRING_TOTEM, ...lowRankSpells[SPELLS.MANA_SPRING_TOTEM]],
@@ -292,6 +309,7 @@ class Abilities extends CoreAbilities {
         spell: [SPELLS.SEARING_TOTEM, ...lowRankSpells[SPELLS.SEARING_TOTEM]],
         category: Abilities.SPELL_CATEGORIES.HEALER_DAMAGING_SPELL,
         gcd: { static: 1000 },
+        primaryCoefficient: 0.167,
       },
       {
         spell: [SPELLS.STONECLAW_TOTEM, ...lowRankSpells[SPELLS.STONECLAW_TOTEM]],
@@ -363,6 +381,19 @@ class Abilities extends CoreAbilities {
     ];
 
     return baseSpells;
+  }
+
+  getAbility(spellId: number) {
+    let ability = super.getAbility(spellId);
+
+    if (!ability) {
+      ability = this.activeAbilities.find(
+        (ability) =>
+          ability.healSpellIds?.includes(spellId) || ability.damageSpellIds?.includes(spellId),
+      );
+    }
+
+    return ability;
   }
 }
 

@@ -14,6 +14,7 @@ import Checklist from './modules/checklist/Module';
 import AlwaysBeCasting from './modules/features/AlwaysBeCasting';
 import HealingEfficiencyDetails from './modules/features/HealingEfficiencyDetails';
 import HealingEfficiencyTracker from './modules/features/HealingEfficiencyTracker';
+import SpellCoefficients from './modules/SpellCoefficients';
 import ChainHeal from './modules/spells/ChainHeal';
 import EarthShield from './modules/spells/EarthShield';
 import ManaTideTotem from './modules/spells/ManaTideTotem';
@@ -23,6 +24,7 @@ class CombatLogParser extends BaseCombatLogParser {
   static specModules = {
     abilities: Abilities,
     buffs: Buffs,
+    spellCoefficients: SpellCoefficients,
     spellManaCost: SpellManaCost,
     abilityTracker: AbilityTracker,
     manaLevelChart: ManaLevelChart,

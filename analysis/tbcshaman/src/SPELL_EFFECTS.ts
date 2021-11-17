@@ -1,4 +1,5 @@
 export const EARTH_SHIELD_HEAL = 379;
+export const HEALING_WAY = 29203;
 export const WATER_SHIELD_ENERGIZE = 23575;
 export const MANA_TIDE_TOTEM_BUFF = 39609;
 export const CLEARCASTING = 16246;
@@ -15,3 +16,10 @@ export const FLURRY_1 = 16257;
 export const SHAMANISTIC_FOCUS = 43339;
 export const STORMSTRIKE_MAIN_HAND = 32175;
 export const STORMSTRIKE_OFF_HAND = 32176;
+export const LIGHTNING_BOLT_OVERLOAD = 45296;
+export const CHAIN_LIGHTNING_OVERLOAD = 45302;
+export const HEALING_STREAM_TOTEM_HEAL = 25566;
+
+export const lowRankSpellEffects = {
+  [HEALING_STREAM_TOTEM_HEAL]: [10463, 10462, 6377, 6375, 5394],
+};
