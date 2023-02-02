@@ -5,6 +5,7 @@ import { TALENTS_EVOKER } from 'common/TALENTS';
 import {
   AbilityEvent,
   ApplyBuffEvent,
+  ApplyBuffStackEvent,
   CastEvent,
   EmpowerEndEvent,
   EventType,
@@ -24,6 +25,7 @@ export const EMPOWERED_CAST = 'EmpoweredCast'; // link empowerend to cast
 export const TA_ECHO_REMOVAL = 'TaEchoTemoval'; // for linking TA echo removal to echo apply
 export const ECHO_TEMPORAL_ANOMALY = 'TemporalAnomaly'; // for linking BuffApply/Heal to echo removal
 export const ECHO = 'Echo'; // for linking BuffApply/Heal to echo removal
+export const ESSENCE_BURST_LINK = 'EssenceBurstLink'; // link eb removal to apply
 export const ESSENCE_BURST_CONSUME = 'EssenceBurstConsumption'; // link essence cast to removing the essence burst buff
 export const DREAM_BREATH_CALL_OF_YSERA = 'DreamBreathCallOfYsera'; // link DB hit to buff removal
 export const DREAM_BREATH_CALL_OF_YSERA_HOT = 'DreamBreathCallOfYseraHoT'; // link DB hot to buff removal
@@ -36,6 +38,7 @@ export const LIVING_FLAME_CALL_OF_YSERA = 'LivingFlameCallOfYsera'; // link buff
 export const HEAL_GROUPING = 'HealGrouping'; // link EB healevents and TA pulses together to easily fetch groups of heals/absorbs
 export const BUFF_GROUPING = 'BuffGrouping'; // link ApplyBuff events together
 export const SHIELD_FROM_TA_CAST = 'ShieldFromTACast';
+export const SPARK_OF_INSIGHT = 'SparkOfInsight'; // link TC stack removals to Spark
 export const STASIS = 'Stasis';
 
 export enum ECHO_TYPE {
@@ -50,6 +53,7 @@ const EB_BUFFER_MS = 2000;
 const EB_VARIANCE_BUFFER = 150; // servers are bad and EB can take over or under 2s to actually trigger
 const LIFEBIND_BUFFER = 5000 + CAST_BUFFER_MS; // 5s duration
 const MAX_ECHO_DURATION = 20000; // 15s with 30% inc = 19s
+const MAX_ESSENCE_BURST_DURATION = 32000; // 15s duration can refresh to 30s with 2s of buffer
 const TA_BUFFER_MS = 6000 + CAST_BUFFER_MS; //TA pulses over 6s at 0% haste
 const STASIS_BUFFER = 1000;
 
@@ -365,6 +369,22 @@ const EVENT_LINKS: EventLink[] = [
       return c.hasTalent(TALENTS_EVOKER.ESSENCE_BURST_TALENT);
     },
   },
+  {
+    linkRelation: ESSENCE_BURST_LINK,
+    reverseLinkRelation: ESSENCE_BURST_LINK,
+    linkingEventId: SPELLS.ESSENCE_BURST_BUFF.id,
+    linkingEventType: [EventType.ApplyBuffStack, EventType.ApplyBuff],
+    referencedEventId: SPELLS.ESSENCE_BURST_BUFF.id,
+    referencedEventType: [EventType.RemoveBuff, EventType.RemoveBuffStack],
+    forwardBufferMs: MAX_ESSENCE_BURST_DURATION,
+    maximumLinks: 1,
+    isActive(c) {
+      return c.hasTalent(TALENTS_EVOKER.ESSENCE_BURST_TALENT);
+    },
+    additionalCondition(linkingEvent, referencedEvent) {
+      return !HasRelatedEvent(referencedEvent, ESSENCE_BURST_LINK);
+    },
+  },
   // group TA shields and EB heals together for easy batch processing
   {
     linkRelation: HEAL_GROUPING,
@@ -466,43 +486,48 @@ const EVENT_LINKS: EventLink[] = [
   },
   {
     linkRelation: LIFEBIND,
-    linkingEventId: SPELLS.LIFEBIND_HEAL.id,
-    linkingEventType: EventType.Heal,
-    referencedEventId: SPELLS.LIFEBIND_BUFF.id,
-    referencedEventType: [EventType.ApplyBuff, EventType.RefreshBuff],
-    backwardBufferMs: LIFEBIND_BUFFER,
+    reverseLinkRelation: LIFEBIND,
+    linkingEventId: SPELLS.LIFEBIND_BUFF.id,
+    linkingEventType: [EventType.ApplyBuff, EventType.RefreshBuff],
+    referencedEventId: SPELLS.LIFEBIND_HEAL.id,
+    referencedEventType: EventType.Heal,
+    forwardBufferMs: LIFEBIND_BUFFER,
   },
   {
     linkRelation: LIFEBIND_APPLY,
     reverseLinkRelation: LIFEBIND_APPLY,
-    linkingEventId: SPELLS.LIFEBIND_BUFF.id,
-    linkingEventType: [EventType.ApplyBuff, EventType.RefreshBuff],
-    referencedEventId: SPELLS.VERDANT_EMBRACE_HEAL.id,
-    referencedEventType: EventType.Heal,
-    backwardBufferMs: CAST_BUFFER_MS,
+    linkingEventId: SPELLS.VERDANT_EMBRACE_HEAL.id,
+    linkingEventType: EventType.Heal,
+    referencedEventId: SPELLS.LIFEBIND_BUFF.id,
+    referencedEventType: [EventType.ApplyBuff, EventType.RefreshBuff],
     forwardBufferMs: CAST_BUFFER_MS,
     anyTarget: true,
     additionalCondition(linkingEvent, referencedEvent) {
       // ve applies lifebind to player and target but there is no ve heal on player
-      const applyEvent = linkingEvent as ApplyBuffEvent;
+      const applyEvent = referencedEvent as ApplyBuffEvent;
       return (
-        applyEvent.targetID === (referencedEvent as HealEvent).targetID ||
+        applyEvent.targetID === (linkingEvent as HealEvent).targetID ||
         applyEvent.targetID === applyEvent.sourceID
       );
     },
   },
   {
     linkRelation: LIFEBIND_HEAL,
-    linkingEventId: SPELLS.LIFEBIND_HEAL.id,
+    reverseLinkRelation: LIFEBIND_HEAL,
+    linkingEventId: DUPLICATION_SPELLS,
     linkingEventType: EventType.Heal,
-    referencedEventId: DUPLICATION_SPELLS,
+    referencedEventId: SPELLS.LIFEBIND_HEAL.id,
     referencedEventType: EventType.Heal,
     anyTarget: true,
-    maximumLinks: 1,
-    backwardBufferMs: 50,
-    forwardBufferMs: 50,
+    forwardBufferMs: 150,
     additionalCondition(linkingEvent, referencedEvent) {
-      return HasRelatedEvent(linkingEvent, LIFEBIND); // make sure the heal is on someone with lifebind buff
+      const linkHeal = linkingEvent as HealEvent;
+      const refHeal = referencedEvent as HealEvent;
+      return (
+        !_hasLifebindEventForTarget(linkHeal, refHeal.targetID) &&
+        HasRelatedEvent(referencedEvent, LIFEBIND) &&
+        !HasRelatedEvent(referencedEvent, LIFEBIND_HEAL)
+      ); // make sure the heal is on someone with lifebind buff
     },
   },
   {
@@ -511,9 +536,20 @@ const EVENT_LINKS: EventLink[] = [
     linkingEventType: EventType.Heal,
     referencedEventId: [TALENTS_EVOKER.REVERSION_TALENT.id, SPELLS.REVERSION_ECHO.id],
     referencedEventType: [EventType.ApplyBuff, EventType.RefreshBuff],
-    backwardBufferMs: CAST_BUFFER_MS,
-    forwardBufferMs: CAST_BUFFER_MS,
+    backwardBufferMs: ECHO_BUFFER,
+    forwardBufferMs: ECHO_BUFFER,
     maximumLinks: 1,
+  },
+  {
+    linkRelation: SPARK_OF_INSIGHT,
+    reverseLinkRelation: SPARK_OF_INSIGHT,
+    linkingEventId: SPELLS.ESSENCE_BURST_BUFF.id,
+    linkingEventType: [EventType.ApplyBuff, EventType.ApplyBuffStack, EventType.RefreshBuff],
+    referencedEventId: SPELLS.TEMPORAL_COMPRESSION_BUFF.id,
+    referencedEventType: EventType.RemoveBuff,
+    isActive(c) {
+      return c.hasTalent(TALENTS_EVOKER.SPARK_OF_INSIGHT_TALENT);
+    },
   },
 ];
 
@@ -530,6 +566,13 @@ class CastLinkNormalizer extends EventLinkNormalizer {
   constructor(options: Options) {
     super(options, EVENT_LINKS);
   }
+}
+
+function _hasLifebindEventForTarget(event: HealEvent, targetID: number): boolean {
+  const lifebindEvents = GetRelatedEvents(event, LIFEBIND_HEAL);
+  return lifebindEvents.some((ev) => {
+    return (ev as HealEvent).targetID === targetID;
+  });
 }
 
 /** Returns true iff the given buff application or heal can be matched back to a hardcast */
@@ -629,6 +672,21 @@ export function getStasisSpell(event: RemoveBuffStackEvent | RemoveBuffEvent): n
     return (relatedEvents[0] as CastEvent).ability.guid;
   }
   return (relatedEvents[0] as EmpowerEndEvent).ability.guid;
+}
+
+export function didSparkProcEssenceBurst(
+  event: ApplyBuffEvent | RemoveBuffEvent | RefreshBuffEvent | ApplyBuffStackEvent,
+) {
+  return HasRelatedEvent(event, SPARK_OF_INSIGHT);
+}
+
+export function didEbConsumeSparkProc(event: RemoveBuffEvent | RemoveBuffStackEvent) {
+  const applyEvent = GetRelatedEvents(event, ESSENCE_BURST_LINK)[0];
+  return HasRelatedEvent(applyEvent, SPARK_OF_INSIGHT);
+}
+
+export function wasEbConsumed(event: ApplyBuffEvent | ApplyBuffStackEvent) {
+  return HasRelatedEvent(event, ESSENCE_BURST_LINK);
 }
 
 export default CastLinkNormalizer;
