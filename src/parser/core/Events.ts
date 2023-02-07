@@ -753,6 +753,7 @@ export interface DeathEvent extends Event<EventType.Death> {
   source: CastTarget;
   sourceIsFriendly: boolean;
   targetID: number;
+  targetInstance?: number;
   targetIsFriendly: boolean;
   ability: Ability;
 }

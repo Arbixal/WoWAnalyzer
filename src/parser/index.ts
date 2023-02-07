@@ -38,6 +38,7 @@ import DevastationEvoker from 'analysis/retail/evoker/devastation';
 import PreservationEvoker from 'analysis/retail/evoker/preservation';
 // Classic
 import ClassicDeathKnightUnholy from 'analysis/classic/deathknight/unholy';
+import ClassicDruidBalance from 'analysis/classic/druid/balance';
 import ClassicDruidRestoration from 'analysis/classic/druid/restoration';
 import ClassicHunter from 'analysis/classic/hunter';
 import ClassicMageArcane from 'analysis/classic/mage/arcane';
@@ -105,6 +106,7 @@ const configs: Config[] = [
 
   // Classic
   ClassicDeathKnightUnholy,
+  ClassicDruidBalance,
   ClassicDruidRestoration,
   ClassicHunter,
   ClassicMageArcane,
