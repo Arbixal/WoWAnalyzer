@@ -65,7 +65,7 @@ class Starfall extends Analyzer {
       <div>
         <strong>Per-Cast Breakdown</strong>
         {this.starfallCasts.map((cast, ix) => (
-          <div key={ix}>
+          <div key={'starfall_cast_' + cast.timestamp}>
             @ {this.owner.formatTimestamp(cast.timestamp)} &mdash;{' '}
             <SpellLink id={SPELLS.STARFALL} /> ({formatNumber(cast.totalDamage)} damage over{' '}
             {Object.entries(cast.enemies).length} mobs)

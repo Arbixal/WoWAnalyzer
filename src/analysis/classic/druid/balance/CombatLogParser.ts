@@ -13,6 +13,7 @@ import AlwaysBeCasting from './modules/features/AlwaysBeCasting';
 import Buffs from './modules/features/Buffs';
 import CooldownThroughputTracker from './modules/features/CooldownThroughputTracker';
 import DotUptimes from './modules/features/DotUptimes';
+import Eclipse from './modules/features/Eclipse';
 // Spells
 import FaerieFire from './modules/spells/FaerieFire';
 import ForceOfNature from './modules/spells/ForceOfNature';
@@ -37,6 +38,7 @@ class CombatLogParser extends BaseCombatLogParser {
     buffs: Buffs,
     cooldownThroughputTracker: CooldownThroughputTracker,
     dotUptimes: DotUptimes,
+    eclipse: Eclipse,
     // Spells
     faerieFire: FaerieFire,
     forceOfNature: ForceOfNature,

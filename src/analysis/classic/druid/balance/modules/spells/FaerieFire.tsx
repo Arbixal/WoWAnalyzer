@@ -3,7 +3,7 @@ import SPELLS from 'common/SPELLS/classic/druid';
 import Enemies from 'parser/shared/modules/Enemies';
 import uptimeBarSubStatistic from 'parser/ui/UptimeBarSubStatistic';
 
-const BAR_COLOR = '#ECCAFF';
+const BAR_COLOR = '#A70E9D';
 
 class FaerieFire extends Analyzer {
   static dependencies = {

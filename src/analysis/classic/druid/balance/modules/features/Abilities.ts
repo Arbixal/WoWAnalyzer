@@ -101,6 +101,11 @@ class Abilities extends CoreAbilities {
         category: SPELL_CATEGORY.UTILITY,
         gcd: { base: 1500 },
       },
+      {
+        spell: [SPELLS.FAERIE_FIRE.id],
+        category: SPELL_CATEGORY.UTILITY,
+        gcd: { base: 1500 },
+      },
       // Pet Related
 
       // Consumable
