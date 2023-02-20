@@ -6,6 +6,22 @@ import { SpellLink } from 'interface';
 
 
 export default [
+  change(date(2023, 2, 18), <>Added pt 1 of the Core Rotation Section of the guide - <SpellLink id={TALENTS_MONK.RISING_MIST_TALENT.id}/> / <SpellLink id={TALENTS_MONK.ANCIENT_TEACHINGS_TALENT.id}/> build rotation.</>, Vohrr),
+  change(date(2023, 2, 19), <>Fix crash in old version of MW module</>, Trevor),
+  change(date(2023, 2, 18), <>Fixed issue with <SpellLink id={TALENTS_MONK.MANA_TEA_TALENT.id}/> not showing up in the Cooldown Tracker.</>, Vohrr),
+  change(date(2023, 2, 18), <>Updated the sample report to a Dragonflight encounter. Minor wording and formatting fixes for the guide</>, Vohrr),
+  change(date(2023, 2, 17), <>Added non-Renewing Mist hot graph to guide and as a statistic</>, Vohrr),
+  change(date(2023, 2, 17), <>Added <SpellLink id={TALENTS_MONK.REVIVAL_TALENT}/> checklist to cooldowns guide section</>, Vohrr),
+  change(date(2023, 2, 17), <>Added <SpellLink id={SPELLS.VIVIFY.id}/> to Core Spells in Guide</>, Vohrr),
+  change(date(2023, 2, 17), <>Refactor <SpellLink id={TALENTS_MONK.ESSENCE_FONT_TALENT}/> module</>, Trevor),
+  change(date(2023, 2, 17), <>UI updates to the <SpellLink id={TALENTS_MONK.INVOKE_CHI_JI_THE_RED_CRANE_TALENT.id}/> guide section</>, Vohrr),
+  change(date(2023, 2, 17), <>UI Updates to core spells section</>, Vohrr),
+  change(date(2023, 2, 16), <>Fix bug in celestial modules with <SpellLink id={TALENTS_MONK.SHAOHAOS_LESSONS_TALENT}/></>, Trevor),
+  change(date(2023, 2, 15), <>Fix celestial crash when using summon statues</>, Trevor),
+  change(date(2023, 2, 12), <>Add <SpellLink id={TALENTS_MONK.MANA_TEA_TALENT}/> and <SpellLink id={TALENTS_MONK.ANCIENT_TEACHINGS_TALENT}/> section to guide</>, Trevor),
+  change(date(2023, 2, 12), <>Add celestials section to guide</>, Trevor),
+  change(date(2023, 2, 12), <>Add guide prototype for Mistweaver</>, Trevor),
+  change(date(2023, 2, 7), <>Updated spell values for Feb 7 tuning</>, Trevor),
   change(date(2023, 2, 1), <>Fixed UI bug with <SpellLink id={TALENTS_MONK.SHEILUNS_GIFT_TALENT.id}/> suggestion (again).</>, Trevor),
   change(date(2023, 2, 1), <><SpellLink id={TALENTS_MONK.SHAOHAOS_LESSONS_TALENT.id}/> formatting fix.</>, Vohrr),
   change(date(2023, 1, 31), <>Fixed UI bug with <SpellLink id={TALENTS_MONK.SHEILUNS_GIFT_TALENT.id}/> suggestion.</>, Vohrr),
