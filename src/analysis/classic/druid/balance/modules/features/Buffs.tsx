@@ -12,11 +12,11 @@ class Buffs extends CoreAuras {
         timelineHighlight: true,
       },
       {
-        spellId: 48518, // Lunar Eclipse
+        spellId: SPELLS.ECLIPSE_LUNAR.id, // Lunar Eclipse
         timelineHighlight: true,
       },
       {
-        spellId: 48517, // Solar Eclipse
+        spellId: SPELLS.ECLIPSE_SOLAR.id, // Solar Eclipse
         timelineHighlight: true,
       },
       // Do not adjust the lines below

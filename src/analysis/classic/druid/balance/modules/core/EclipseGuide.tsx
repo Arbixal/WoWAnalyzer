@@ -136,15 +136,16 @@ export default function EclipseGuideSection(): JSX.Element | null {
   const explanation = (
     <>
       <p>
-        A boomkin's DPS is based around management of <SpellLink id={48525} />. Whenever you crit
-        using <SpellLink id={SPELLS.STARFIRE} /> you gain <SpellLink id={48517} /> which increases
-        crit chance for your <SpellLink id={SPELLS.WRATH} /> casts. Likewise when
-        <SpellLink id={SPELLS.WRATH} /> crits you gain <SpellLink id={48518} />, increasing the crit
-        chance on your <SpellLink id={SPELLS.STARFIRE} /> casts.
+        A boomkin's DPS is based around management of <SpellLink id={SPELLS.ECLIPSE} />. Whenever
+        you crit using <SpellLink id={SPELLS.STARFIRE} /> you gain{' '}
+        <SpellLink id={SPELLS.ECLIPSE_SOLAR} /> which increases crit chance for your{' '}
+        <SpellLink id={SPELLS.WRATH} /> casts. Likewise when
+        <SpellLink id={SPELLS.WRATH} /> crits you gain <SpellLink id={SPELLS.ECLIPSE_LUNAR} />,
+        increasing the crit chance on your <SpellLink id={SPELLS.STARFIRE} /> casts.
       </p>
       <p>
         Once cooldowns and DoTs have been applied, settle into a standard rotation or spamming
-        <SpellLink id={SPELLS.WRATH} /> until you proc a <SpellLink id={48518} />.
+        <SpellLink id={SPELLS.WRATH} /> until you proc a <SpellLink id={SPELLS.ECLIPSE_LUNAR} />.
       </p>
       <p>
         Make use of any haste increasing items (<SpellLink id={SPELLS.HYPERSPEED_ACCELERATION} /> or{' '}
@@ -153,7 +154,7 @@ export default function EclipseGuideSection(): JSX.Element | null {
       </p>
       <p>
         Continue spamming <SpellLink id={SPELLS.STARFIRE} /> after the eclipse has finished until
-        you proc <SpellLink id={48517} /> and revert back to spamming{' '}
+        you proc <SpellLink id={SPELLS.ECLIPSE_SOLAR} /> and revert back to spamming{' '}
         <SpellLink id={SPELLS.WRATH} />.
       </p>
     </>

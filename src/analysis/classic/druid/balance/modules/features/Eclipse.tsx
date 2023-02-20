@@ -24,11 +24,11 @@ class Eclipse extends Analyzer {
     this.active = true;
 
     this.addEventListener(
-      Events.applybuff.to(SELECTED_PLAYER).spell([{ id: 48517 }, { id: 48518 }]),
+      Events.applybuff.to(SELECTED_PLAYER).spell([SPELLS.ECLIPSE_SOLAR, SPELLS.ECLIPSE_LUNAR]),
       this.onEclipseApply,
     );
     this.addEventListener(
-      Events.removebuff.to(SELECTED_PLAYER).spell([{ id: 48517 }, { id: 48518 }]),
+      Events.removebuff.to(SELECTED_PLAYER).spell([SPELLS.ECLIPSE_SOLAR, SPELLS.ECLIPSE_LUNAR]),
       this.onEclipseRemove,
     );
     this.addEventListener(Events.cast.by(SELECTED_PLAYER), this.onCast);
@@ -61,7 +61,7 @@ class Eclipse extends Analyzer {
     }
 
     if (
-      this.eclipseProcs[this.cast].spellId === 48517 &&
+      this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_SOLAR.id &&
       event.ability.guid === SPELLS.STARFIRE.id
     ) {
       this.eclipseProcs[this.cast].badCasts += 1;
@@ -71,13 +71,17 @@ class Eclipse extends Analyzer {
         castEvent.meta.isInefficientCast = true;
         castEvent.meta.inefficientCastReason = (
           <>
-            <SpellLink id={SPELLS.WRATH} /> has higher crit chance during <SpellLink id={48517} />.
+            <SpellLink id={SPELLS.WRATH} /> has higher crit chance during{' '}
+            <SpellLink id={SPELLS.ECLIPSE_SOLAR} />.
           </>
         );
       }
     }
 
-    if (this.eclipseProcs[this.cast].spellId === 48518 && event.ability.guid === SPELLS.WRATH.id) {
+    if (
+      this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_LUNAR.id &&
+      event.ability.guid === SPELLS.WRATH.id
+    ) {
       this.eclipseProcs[this.cast].badCasts += 1;
       const castEvent = event.castEvent;
       if (castEvent) {
@@ -86,7 +90,7 @@ class Eclipse extends Analyzer {
         castEvent.meta.inefficientCastReason = (
           <>
             <SpellLink id={SPELLS.STARFIRE} /> has higher crit chance during{' '}
-            <SpellLink id={48518} />.
+            <SpellLink id={SPELLS.ECLIPSE_LUNAR} />.
           </>
         );
       }
@@ -94,17 +98,22 @@ class Eclipse extends Analyzer {
   }
 
   onCast(event: CastEvent) {
-    if (this.cast === -1 || event.ability.guid === 48517 || event.ability.guid === 48518) {
+    if (
+      this.cast === -1 ||
+      event.ability.guid === SPELLS.ECLIPSE_SOLAR.id ||
+      event.ability.guid === SPELLS.ECLIPSE_LUNAR.id
+    ) {
       return;
     }
 
     if (event.ability.guid === 53908) {
-      if (this.eclipseProcs[this.cast].spellId === 48518) {
+      if (this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_LUNAR.id) {
         event.meta = event.meta || {};
         event.meta.isEnhancedCast = true;
         event.meta.enhancedCastReason = (
           <>
-            During <SpellLink id={48518} /> is the best time to use haste increasing items.
+            During <SpellLink id={SPELLS.ECLIPSE_LUNAR} /> is the best time to use haste increasing
+            items.
           </>
         );
       } else {
@@ -112,7 +121,7 @@ class Eclipse extends Analyzer {
         event.meta.isInefficientCast = true;
         event.meta.inefficientCastReason = (
           <>
-            <SpellLink id={53908} /> is mostly wasted on <SpellLink id={48517} /> as{' '}
+            <SpellLink id={53908} /> is mostly wasted on <SpellLink id={SPELLS.ECLIPSE_SOLAR} /> as{' '}
             <SpellLink id={SPELLS.WRATH} /> is almost haste capped already.
           </>
         );
@@ -120,12 +129,13 @@ class Eclipse extends Analyzer {
     }
 
     if (event.ability.guid === SPELLS.HYPERSPEED_ACCELERATION.id) {
-      if (this.eclipseProcs[this.cast].spellId === 48518) {
+      if (this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_LUNAR.id) {
         event.meta = event.meta || {};
         event.meta.isEnhancedCast = true;
         event.meta.enhancedCastReason = (
           <>
-            During <SpellLink id={48518} /> is the best time to use haste increasing items.
+            During <SpellLink id={SPELLS.ECLIPSE_LUNAR} /> is the best time to use haste increasing
+            items.
           </>
         );
       } else {
@@ -134,25 +144,25 @@ class Eclipse extends Analyzer {
         event.meta.inefficientCastReason = (
           <>
             <SpellLink id={SPELLS.HYPERSPEED_ACCELERATION.id} /> is mostly wasted on{' '}
-            <SpellLink id={48517} /> as <SpellLink id={SPELLS.WRATH} /> is almost haste capped
-            already.
+            <SpellLink id={SPELLS.ECLIPSE_SOLAR} /> as <SpellLink id={SPELLS.WRATH} /> is almost
+            haste capped already.
           </>
         );
       }
     }
 
-    /* if (this.eclipseProcs[this.cast].spellId === 48517 && event.ability.guid === SPELLS.STARFIRE.id) {
+    /* if (this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_SOLAR.id && event.ability.guid === SPELLS.STARFIRE.id) {
       this.eclipseProcs[this.cast].badCasts += 1;
       event.meta = event.meta || {}
       event.meta.isInefficientCast= true;
-      event.meta.inefficientCastReason= <><SpellLink id={SPELLS.WRATH} /> has higher crit chance during <SpellLink id={48517} />.</>;
+      event.meta.inefficientCastReason= <><SpellLink id={SPELLS.WRATH} /> has higher crit chance during <SpellLink id={SPELLS.ECLIPSE_SOLAR} />.</>;
     }
 
-    if (this.eclipseProcs[this.cast].spellId === 48518 && event.ability.guid === SPELLS.WRATH.id) {
+    if (this.eclipseProcs[this.cast].spellId === SPELLS.ECLIPSE_LUNAR.id && event.ability.guid === SPELLS.WRATH.id) {
       this.eclipseProcs[this.cast].badCasts += 1;
       event.meta = event.meta || {};
       event.meta.isInefficientCast = true;
-      event.meta.inefficientCastReason = <><SpellLink id={SPELLS.STARFIRE} /> has higher crit chance during <SpellLink id={48518} />.</>;
+      event.meta.inefficientCastReason = <><SpellLink id={SPELLS.STARFIRE} /> has higher crit chance during <SpellLink id={SPELLS.ECLIPSE_LUNAR} />.</>;
     }  */
     //this.eclipseProcs[this.cast].casts.push(event);
   }

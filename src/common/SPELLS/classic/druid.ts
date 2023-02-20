@@ -370,6 +370,21 @@ const spells = spellIndexableList({
     icon: 'ability_druid_typhoon',
     lowRanks: [53226, 53225, 53223, 50516],
   },
+  ECLIPSE: {
+    id: 48525,
+    name: 'Eclipse',
+    icon: 'ability_druid_eclipse',
+  },
+  ECLIPSE_SOLAR: {
+    id: 48517,
+    name: 'Eclipse (Solar)',
+    icon: 'ability_druid_eclipseorange',
+  },
+  ECLIPSE_LUNAR: {
+    id: 48518,
+    name: 'Eclipse (Lunar)',
+    icon: 'ability_druid_eclipse',
+  },
   // Feral Combat
   FERAL_CHARGE_BEAR: {
     id: 16979,

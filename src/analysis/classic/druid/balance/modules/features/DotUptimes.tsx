@@ -38,12 +38,13 @@ class DotUptimes extends Analyzer {
           <p>
             <SpellLink id={SPELLS.INSECT_SWARM} /> should be maintained throughout the fight but
             allow it to fall off before reapplying. Do not reapply if there are less than 7 seconds
-            remaining on <SpellLink id={48518} />, wait for the eclipse to expire.
+            remaining on <SpellLink id={SPELLS.ECLIPSE_LUNAR} />, wait for the eclipse to expire.
           </p>
         )}
         <p>
           <SpellLink id={SPELLS.MOONFIRE} /> should be recast immediately after
-          <SpellLink id={48517} /> expires and while on the move (if not already applied).
+          <SpellLink id={SPELLS.ECLIPSE_SOLAR} /> expires and while on the move (if not already
+          applied).
         </p>
       </>
     );
