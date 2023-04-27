@@ -396,6 +396,11 @@ const spells = spellIndexableList({
     name: 'Feral Charge - Cat',
     icon: 'spell_druid_feralchargecat',
   },
+  LEADER_OF_THE_PACK: {
+    id: 24932,
+    name: 'Leader of the Pack',
+    icon: 'spell_nature_unyeildingstamina',
+  },
   MANGLE_BEAR: {
     id: 48564,
     name: 'Mangle (Bear)',
@@ -465,6 +470,15 @@ const spells = spellIndexableList({
     id: 48543,
     name: 'Revitalize',
     icon: 'ability_druid_replenish',
+  },
+
+  // ---------
+  // GLYPHS
+  // ---------
+  GLYPH_OF_SWIFTMEND: {
+    id: 54864,
+    name: 'Glyph of Swiftmend',
+    icon: 'inv_glyph_majordruid',
   },
 });
 

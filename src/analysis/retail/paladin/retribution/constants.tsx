@@ -17,7 +17,6 @@ export const ABILITIES_AFFECTED_BY_DAMAGE_INCREASES = [
   TALENTS.WAKE_OF_ASHES_TALENT,
   TALENTS.EXECUTION_SENTENCE_TALENT,
   TALENTS.JUSTICARS_VENGEANCE_TALENT,
-  TALENTS.EYE_FOR_AN_EYE_TALENT,
 ];
 
 // Stuff like Retribution mastery and Execution sentence increases damage done by these sources of holy damage
@@ -41,4 +40,5 @@ export const HOLY_POWER_FINISHERS: Spell[] = [
   TALENTS.JUSTICARS_VENGEANCE_TALENT,
 ];
 
-export const EMPYREAN_POWER_CHANCE = 0.15;
+export const CRUSADER_STRIKE_EMPYREAN_POWER_CHANCE = 0.15;
+export const CRUSADING_STRIKE_EMPYREAN_POWER_CHANCE = 0.05;

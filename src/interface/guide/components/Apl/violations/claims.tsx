@@ -7,6 +7,7 @@ import {
   Apl,
   CheckResult,
   InternalRule,
+  isRuleEqual,
   spells,
   TargetType,
   Tense,
@@ -55,7 +56,7 @@ const defaultClaimFilter = (
   rule: InternalRule,
   claims: Set<Violation>,
 ): boolean => {
-  const successes = result.successes.filter((suc) => suc.rule === rule).length;
+  const successes = result.successes.filter((suc) => isRuleEqual(suc.rule, rule)).length;
 
   return claims.size > minClaimCount(result) && claims.size / (successes + claims.size) > 0.4;
 };
@@ -99,17 +100,22 @@ function EventTimestamp({ event }: { event: AnyEvent }) {
   );
 }
 
-export const ActualCastDescription = ({ event }: { event: Violation['actualCast'] }) => (
+export const ActualCastDescription = ({
+  event,
+  omitTarget,
+}: {
+  event: Violation['actualCast'];
+  omitTarget?: boolean;
+}) => (
   <>
     At <EventTimestamp event={event} /> into the fight, you cast{' '}
     <SpellLink id={event.ability.guid} />
-    {event.targetID && (
+    {!omitTarget && event.targetID && (
       <>
         {' '}
         on <TargetName event={event} />
       </>
     )}
-    .
   </>
 );
 
@@ -153,7 +159,7 @@ const overcastFillers: ViolationExplainer<InternalRule> = {
   describe: ({ violation }) => (
     <>
       <p>
-        <ActualCastDescription event={violation.actualCast} />
+        <ActualCastDescription event={violation.actualCast} />.
       </p>
       <p>
         This is a low-priority filler spell. You should instead cast a higher-priority spell like{' '}
@@ -227,7 +233,7 @@ const droppedRule: ViolationExplainer<{ rule: InternalRule; spell: Spell }> = {
   describe: ({ violation }) => (
     <>
       <p>
-        <ActualCastDescription event={violation.actualCast} />
+        <ActualCastDescription event={violation.actualCast} />.
       </p>
       <p>
         {violation.rule.condition ? (

@@ -179,6 +179,9 @@ class BaseCelestialAnalyzer extends Analyzer {
   }
 
   onEnvbApply(event: ApplyBuffEvent | RefreshBuffEvent) {
+    if (!this.celestialActive) {
+      return;
+    }
     this.castTrackers.at(-1)!.totalEnvB += 1;
   }
 
@@ -263,7 +266,7 @@ class BaseCelestialAnalyzer extends Analyzer {
     checklistItems.push({
       label: (
         <>
-          <SpellLink id={TALENTS_MONK.ENVELOPING_BREATH_TALENT.id} />s applied per{' '}
+          <SpellLink id={SPELLS.ENVELOPING_BREATH_HEAL.id} />s applied per{' '}
           <SpellLink id={TALENTS_MONK.ENVELOPING_MIST_TALENT} />
         </>
       ),

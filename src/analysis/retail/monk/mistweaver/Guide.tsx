@@ -8,11 +8,11 @@ import CastEfficiencyBar from 'parser/ui/CastEfficiencyBar';
 import { GapHighlight } from 'parser/ui/CooldownBar';
 import { explanationAndDataSubsection } from 'interface/guide/components/ExplanationRow';
 import { RoundedPanel } from 'interface/guide/components/GuideDivs';
-import * as AplCheck from './modules/core/AplCheck';
-import AplChoiceDescription from './modules/core/AplChoiceDescription';
+import * as AplCheck from './modules/core/apl/AplCheck';
+import AplChoiceDescription from './modules/core/apl/AplChoiceDescription';
 import { AplSectionData } from 'interface/guide/components/Apl';
 import { defaultExplainers } from 'interface/guide/components/Apl/violations/claims';
-import filterCelestial from './modules/core/ExplainCelestial';
+import filterCelestial from './modules/core/apl/ExplainCelestial';
 
 const explainers = {
   overcast: filterCelestial(defaultExplainers.overcastFillers),
@@ -24,25 +24,20 @@ export const GUIDE_CORE_EXPLANATION_PERCENT = 40;
 export default function Guide({ modules, events, info }: GuideProps<typeof CombatLogParser>) {
   return (
     <>
-      <Section title="Core Spells">
+      <Section title="Core Spells and Buffs">
+        <SubSection></SubSection>
         {modules.renewingMist.guideSubsection}
         {info.combatant.hasTalent(TALENTS_MONK.RISING_SUN_KICK_TALENT) &&
           modules.risingSunKick.guideSubsection}
         {modules.thunderFocusTea.guideSubsection}
         {modules.vivify.guideSubsection}
         {modules.essenceFont.guideSubsection}
-        <RemGraphSubsection modules={modules} events={events} info={info} />
-      </Section>
-      <Section title="Short cooldowns, buffs, and procs">
-        {info.combatant.hasTalent(TALENTS_MONK.CHI_BURST_TALENT) &&
-          modules.chiBurst.guideSubsection}
-        {info.combatant.hasTalent(TALENTS_MONK.VIVACIOUS_VIVIFICATION_TALENT) &&
-          modules.vivaciousVivification.guideSubsection}
         {info.combatant.hasTalent(TALENTS_MONK.ANCIENT_TEACHINGS_TALENT) &&
-          modules.ancientTeachingsoftheMonastery.guideSubsection}
+          modules.ancientTeachings.guideSubsection}
         {info.combatant.hasTalent(TALENTS_MONK.SHEILUNS_GIFT_TALENT) && (
           <SheilunsGraph modules={modules} events={events} info={info} />
         )}
+        <RemGraphSubsection modules={modules} events={events} info={info} />
       </Section>
       <Section title="Healing Cooldowns">
         <CooldownGraphSubsection modules={modules} events={events} info={info} />
@@ -76,6 +71,12 @@ export default function Guide({ modules, events, info }: GuideProps<typeof Comba
           />
         </SubSection>
       </Section>
+      <Section title="Other cooldowns, buffs, and procs">
+        {info.combatant.hasTalent(TALENTS_MONK.CHI_BURST_TALENT) &&
+          modules.chiBurst.guideSubsection}
+        {info.combatant.hasTalent(TALENTS_MONK.VIVACIOUS_VIVIFICATION_TALENT) &&
+          modules.vivaciousVivification.guideSubsection}
+      </Section>
       <PreparationSection />
     </>
   );
@@ -90,9 +91,9 @@ function HotGraphSubsection({ modules, events, info }: GuideProps<typeof CombatL
       <SpellLink id={TALENTS_MONK.ESSENCE_FONT_TALENT.id} /> out before casting{' '}
       <SpellLink id={modules.revival.getRevivalTalent()} /> or{' '}
       <SpellLink id={modules.invokeChiJi.getCelestialTalent()} /> will drastically increase their
-      effectiveness, and the number of <SpellLink id={TALENTS_MONK.ENVELOPING_BREATH_TALENT.id} />{' '}
-      that go out during <SpellLink id={modules.invokeChiJi.getCelestialTalent()} /> directly
-      correlates to your hps during.
+      effectiveness, and the number of <SpellLink id={SPELLS.ENVELOPING_BREATH_HEAL.id} /> that go
+      out during <SpellLink id={modules.invokeChiJi.getCelestialTalent()} /> directly correlates to
+      your hps during.
       {modules.hotCountGraph.plot}
     </SubSection>
   );

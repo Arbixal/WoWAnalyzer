@@ -34,6 +34,8 @@ import PlayerSelection from './PlayerSelection';
 import { getPlayerIdFromParam } from 'interface/selectors/url/report/getPlayerId';
 import { getPlayerNameFromParam } from 'interface/selectors/url/report/getPlayerName';
 import { isClassicExpansion } from 'game/Expansion';
+import { useWaDispatch } from 'interface/utils/useWaDispatch';
+import { CLASSIC_EXPANSION } from 'game/Expansion';
 
 const FAKE_PLAYER_IF_DEV_ENV = false;
 
@@ -136,6 +138,7 @@ const PlayerLoader = ({ children }: Props) => {
   const { fight: selectedFight } = useFight();
   const { player: playerParam } = useParams();
   const navigate = useNavigate();
+  const dispatch = useWaDispatch();
   const playerId = getPlayerIdFromParam(playerParam);
   const playerName = getPlayerNameFromParam(playerParam);
 
@@ -195,6 +198,28 @@ const PlayerLoader = ({ children }: Props) => {
             }
           }
 
+          const config = getConfig(CLASSIC_EXPANSION, 1, player, combatant);
+          if (config) {
+            if (config?.spec) {
+              switch (config?.spec.role) {
+                case ROLES.TANK:
+                  tanks += 1;
+                  break;
+                case ROLES.HEALER:
+                  healers += 1;
+                  break;
+                case ROLES.DPS.MELEE:
+                  dps += 1;
+                  break;
+                case ROLES.DPS.RANGED:
+                  ranged += 1;
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
+
           // Gear may be null for broken combatants
           const combatantILvl = combatant.gear ? getAverageItemLevel(combatant.gear) : 0;
           if (combatantILvl !== 0) {
@@ -209,7 +234,7 @@ const PlayerLoader = ({ children }: Props) => {
         }
         dispatchFC({ type: 'set_combatants', combatants, combatantsFightId: fight.id });
         // We need to set the combatants in the global state so the NavigationBar, which is not a child of this component, can also use it
-        setCombatants(combatants);
+        dispatch(setCombatants(combatants));
       } catch (error) {
         const isCommonError = error instanceof LogNotFoundError;
         if (!isCommonError) {
@@ -217,10 +242,10 @@ const PlayerLoader = ({ children }: Props) => {
         }
         dispatchFC({ type: 'set_error', error: error as Error });
         // We need to set the combatants in the global state so the NavigationBar, which is not a child of this component, can also use it
-        setCombatants(null);
+        dispatch(setCombatants(null));
       }
     },
-    [selectedFight, selectedReport],
+    [dispatch, selectedFight, selectedReport],
   );
 
   useEffect(() => {
@@ -404,7 +429,7 @@ const PlayerLoader = ({ children }: Props) => {
             makeAnalyzerUrl(selectedReport, selectedFight.id, playerId, undefined, build)
           }
         />
-        <ReportRaidBuffList combatants={combatants} />
+        <ReportRaidBuffList report={selectedReport} combatants={combatants} />
       </div>
     );
   }

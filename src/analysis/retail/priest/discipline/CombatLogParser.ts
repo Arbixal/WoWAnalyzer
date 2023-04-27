@@ -43,7 +43,6 @@ import EnduringLuminescense from './modules/spells/EnduringLuminescence';
 import Indemnity from './modules/spells/Indemnity';
 import Expiation from './modules/spells/Expiation';
 import PowerWordShield from './modules/spells/PowerWordShield';
-import AegisOfWrath from './modules/spells/AegisOfWrath';
 import CrystallineReflection from './modules/spells/CrystallineReflection';
 import PainAndSuffering from './modules/spells/PainAndSuffering';
 import ThroesOfPain from './modules/spells/ThroesOfPain';
@@ -62,6 +61,9 @@ import ShadowCovenant from './modules/spells/ShadowCovenant/ShadowCovenant';
 import AbyssalReverie from './modules/spells/AbyssalReverie';
 import TwilightEquilibriumNormalizer from './normalizers/TwilightEquilibriumNormalizer';
 import DamageCastLink from './normalizers/DamageCastLink';
+import WealAndWoe from './modules/spells/WealAndWoe';
+import Aberrus2p from './modules/spells/Aberrus2p';
+import RadiantProvidence from './modules/spells/RadiantProvidence';
 
 class CombatLogParser extends CoreCombatLogParser {
   static specModules = {
@@ -102,7 +104,6 @@ class CombatLogParser extends CoreCombatLogParser {
     atonementApplicatorBreakdown: AtonementApplicatorBreakdown,
     solaceVsShieldDiscipline: SolaceVsShieldDiscipline,
     enduringLuminescense: EnduringLuminescense,
-    AegisOfWrath: AegisOfWrath,
     crystallineReflection: CrystallineReflection,
     powerWordRadiance: PowerWordRadiance,
 
@@ -134,6 +135,11 @@ class CombatLogParser extends CoreCombatLogParser {
     resplendentLight: ResplendentLight,
     raptureAnalysis: RaptureAnalysis,
     abyssalReverie: AbyssalReverie,
+    wealAndWoe: WealAndWoe,
+    aberrus2p: Aberrus2p,
+
+    // Items:
+    radiantProvidence: RadiantProvidence,
   };
   static guide = Guide;
 }
