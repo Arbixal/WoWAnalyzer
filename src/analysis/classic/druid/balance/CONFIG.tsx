@@ -35,7 +35,7 @@ const config: Config = {
     },
   },
   // A recent example report to see interesting parts of the spec. Will be shown on the homepage.
-  exampleReport: '/report/v3TJFzZNCdM7a8Hx/11-Normal+Patchwerk+-+Kill+(2:01)/Melancailey',
+  exampleReport: '/report/qBm62NTRxQPL9Dyw/13-Hardmode+XT-002+Deconstructor+-+Kill+(3:53)/Kweeva',
   // Add spells to display separately on the timeline
   timeline: {
     separateCastBars: [[]],
